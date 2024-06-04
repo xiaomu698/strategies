@@ -2,7 +2,7 @@
   "max_open_trades": 5, // 最大同时打开的交易数
   "stake_currency": "USDT", // 下注货币
   "dry_run_wallet": 1000, // 模拟运行的钱包余额
-  "stake_amount": 900, // 每次下注金额
+  "stake_amount": 200, // 每次下注金额
   "tradable_balance_ratio": 0.99, // 可交易余额比例
   "fiat_display_currency": "USD", // 法币显示货币
   "timeframe": "5m", // 时间框架（每根K线的时间）
