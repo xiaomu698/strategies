@@ -1351,37 +1351,46 @@ class NNPredict(IStrategy):
 
     ###################################
 
-    def confirm_trade_entry(
-        self,
-        pair: str,
-        order_type: str,
-        amount: float,
-        rate: float,
-        time_in_force: str,
-        current_time: datetime,
-        entry_tag: Optional[str],
-        side: str,
-        **kwargs,
-    ) -> bool:
-        # this only makes sense in 'live' modes
-        if self.dp.runmode.value in ("backtest", "plot", "hyperopt"):
-            return True
+def confirm_trade_entry(
+    self,
+    pair: str,
+    order_type: str,
+    amount: float,
+    rate: float,
+    time_in_force: str,
+    current_time: datetime,
+    entry_tag: Optional[str],
+    side: str,
+    **kwargs,
+) -> bool:
+    # 在实际运行模式下进行检查（不在回测、绘图或优化模式）
+    if self.dp.runmode.value in ("backtest", "plot", "hyperopt"):
+        return True
 
-        # in 'real' systems, there is often a delay between the signal and the trade
-        # double-check that predicted gain is still above threshold
+    # 如果当前交易对在自定义交易信息中
+    if pair in self.custom_trade_info:
+        trade_info = self.custom_trade_info[pair]
+        curr_pred = trade_info.get("curr_prediction", 0.0)  # 确保 curr_pred 有默认值
+        curr_target = trade_info.get("curr_target", rate)  # 确保 curr_target 有默认值
 
-        if pair in self.custom_trade_info:
-            curr_pred = self.custom_trade_info[pair]["curr_prediction"]
+        # 检查当前价格是否高于目标价格，如果是，则取消交易
+        if rate >= curr_target:
+            if self.dp.runmode.value not in ("backtest", "plot", "hyperopt"):
+                print("")
+                print(f"    *** {pair} 交易取消。价格 ({rate:.2f}) 高于目标 ({curr_target:.2f}) ")
+                print("")
+            return False
 
-            # check rate against target
+    # 仅用于调试
+    if self.dp.runmode.value not in ("backtest", "plot", "hyperopt"):
+        print("")
+        print(
+            f"    交易进入: {pair}, 价格: {rate:.4f} 预测收益: {curr_pred:.2f}% 目标: {curr_target:.2f}"
+        )
+        print("")
 
-            curr_target = self.custom_trade_info[pair]["curr_target"]
-            if rate >= curr_target:
-                if self.dp.runmode.value not in ("backtest", "plot", "hyperopt"):
-                    print("")
-                    print(f"    *** {pair} Trade cancelled. Rate ({rate:.2f}) above target ({curr_target:.2f}) ")
-                    print("")
-                return False
+    return True
+
 
         # just debug
         if self.dp.runmode.value not in ("backtest", "plot", "hyperopt"):
