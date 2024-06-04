@@ -1,94 +1,94 @@
 {
-  "max_open_trades": 10,
-  "stake_currency": "USD",
-  "dry_run_wallet": 1000,
-  "stake_amount": 200,
-  "tradable_balance_ratio": 0.99,
-  "fiat_display_currency": "USD",
-  "timeframe": "5m",
-  "dry_run": true,
-  "cancel_open_orders_on_exit": false,
+  "max_open_trades": 10, // 最大同时打开的交易数
+  "stake_currency": "USD", // 下注货币
+  "dry_run_wallet": 1000, // 模拟运行的钱包余额
+  "stake_amount": 200, // 每次下注金额
+  "tradable_balance_ratio": 0.99, // 可交易余额比例
+  "fiat_display_currency": "USD", // 法币显示货币
+  "timeframe": "5m", // 时间框架（每根K线的时间）
+  "dry_run": true, // 是否模拟运行
+  "cancel_open_orders_on_exit": false, // 退出时是否取消未完成订单
   "unfilledtimeout": {
-    "buy": 10,
-    "sell": 30,
-    "unit": "minutes"
+    "buy": 10, // 买入订单未完成的超时时间（分钟）
+    "sell": 30, // 卖出订单未完成的超时时间（分钟）
+    "unit": "minutes" // 超时时间单位
   },
   "bid_strategy": {
-    "price_side": "ask",
-    "ask_last_balance": 0.0,
-    "use_order_book": true,
-    "order_book_top": 1,
+    "price_side": "ask", // 买入定价方向
+    "ask_last_balance": 0.0, // 最后平衡价格
+    "use_order_book": true, // 是否使用订单簿
+    "order_book_top": 1, // 使用订单簿顶部几档
     "check_depth_of_market": {
-      "enabled": false,
-      "bids_to_ask_delta": 1
+      "enabled": false, // 是否检查市场深度
+      "bids_to_ask_delta": 1 // 买卖价差
     }
   },
   "ask_strategy": {
-    "price_side": "bid",
-    "use_order_book": true,
-    "order_book_top": 1
+    "price_side": "bid", // 卖出定价方向
+    "use_order_book": true, // 是否使用订单簿
+    "order_book_top": 1 // 使用订单簿顶部几档
   },
   "exchange": {
-    "name": "binance",
-    "key": "",
-    "secret": "",
+    "name": "binance", // 交易所名称
+    "key": "", // API密钥
+    "secret": "", // API密钥
     "ccxt_config": {
-      "enableRateLimit": true
+      "enableRateLimit": true // 是否启用速率限制
     },
     "ccxt_async_config": {
-      "enableRateLimit": true,
-      "rateLimit": 200
+      "enableRateLimit": true, // 是否启用异步速率限制
+      "rateLimit": 200 // 速率限制
     },
     "pair_whitelist": [
-      ".*/USD"
+      ".*/USD" // 交易对白名单（匹配所有/USD对）
     ],
     "pair_blacklist": [
-      ".*(_PREMIUM|HALF|HEDGE)/.*",
-      ".*(AUD|BRZ|CAD|CHF|EUR|GBP|HKD|IDRT|JPY|NGN|RUB|SGD|TRY|UAH|USD|ZAR)/.*",
-      ".*(BUSD|CUSDT|DAI|PAX|PAXG|SUSD|TUSD|USDC|USDT|VAI)/.*",
-      ".*(ACM|AFA|ALA|ALL|APL|ASR|ATM|BAR|CAI|CITY|FOR|GAL|GOZ|IBFK|JUV|LEG|LOCK-1|NAVI|NMR|NOV|OG|PFL|PSG|ROUSH|STV|TH|TRA|UCH|UFC|YBO)/.*",
-      ".*(CHZ|CTXC|HBAR|NMR|SHIB|SLP|XVS|ONG|ARDR)/.*"
+      ".*(_PREMIUM|HALF|HEDGE)/.*", // 匹配特定类型的交易对
+      ".*(AUD|BRZ|CAD|CHF|EUR|GBP|HKD|IDRT|JPY|NGN|RUB|SGD|TRY|UAH|USD|ZAR)/.*", // 匹配特定货币对
+      ".*(BUSD|CUSDT|DAI|PAX|PAXG|SUSD|TUSD|USDC|USDT|VAI)/.*", // 匹配特定稳定币对
+      ".*(ACM|AFA|ALA|ALL|APL|ASR|ATM|BAR|CAI|CITY|FOR|GAL|GOZ|IBFK|JUV|LEG|LOCK-1|NAVI|NMR|NOV|OG|PFL|PSG|ROUSH|STV|TH|TRA|UCH|UFC|YBO)/.*", // 匹配特定代币对
+      ".*(CHZ|CTXC|HBAR|NMR|SHIB|SLP|XVS|ONG|ARDR)/.*" // 匹配其他特定代币对
     ]
   },
   "pairlists": [
     {
-      "method": "StaticPairList"
+      "method": "StaticPairList" // 配对列表方法
     }
   ],
   "edge": {
-    "enabled": false,
-    "process_throttle_secs": 3600,
-    "calculate_since_number_of_days": 7,
-    "allowed_risk": 0.01,
-    "stoploss_range_min": -0.01,
-    "stoploss_range_max": -0.3,
-    "stoploss_range_step": -0.01,
-    "minimum_winrate": 0.60,
-    "minimum_expectancy": 0.20,
-    "min_trade_number": 10,
-    "max_trade_duration_minute": 1440,
-    "remove_pumps": false
+    "enabled": false, // 是否启用edge
+    "process_throttle_secs": 3600, // 处理节流时间（秒）
+    "calculate_since_number_of_days": 7, // 计算天数
+    "allowed_risk": 0.01, // 允许风险
+    "stoploss_range_min": -0.01, // 最小止损范围
+    "stoploss_range_max": -0.3, // 最大止损范围
+    "stoploss_range_step": -0.01, // 止损范围步长
+    "minimum_winrate": 0.60, // 最小胜率
+    "minimum_expectancy": 0.20, // 最小期望值
+    "min_trade_number": 10, // 最小交易数量
+    "max_trade_duration_minute": 1440, // 最大交易持续时间（分钟）
+    "remove_pumps": false // 是否移除拉升行情
   },
   "telegram": {
-    "enabled": false,
-    "token": "",
-    "chat_id": ""
+    "enabled": false, // 是否启用Telegram通知
+    "token": "", // Telegram token
+    "chat_id": "" // Telegram chat ID
   },
   "api_server": {
-    "enabled": true,
-    "listen_ip_address": "127.0.0.1",
-    "listen_port": 8080,
-    "verbosity": "error",
-    "enable_openapi": false,
-    "jwt_secret_key": "",
-    "CORS_origins": [],
-    "username": "",
-    "password": ""
+    "enabled": true, // 是否启用API服务器
+    "listen_ip_address": "127.0.0.1", // 监听IP地址
+    "listen_port": 8080, // 监听端口
+    "verbosity": "error", // 日志详细级别
+    "enable_openapi": false, // 是否启用OpenAPI
+    "jwt_secret_key": "", // JWT密钥
+    "CORS_origins": [], // 允许的CORS来源
+    "username": "", // API用户名
+    "password": "" // API密码
   },
-  "bot_name": "freqtrade",
-  "initial_state": "running",
-  "forcebuy_enable": false,
+  "bot_name": "freqtrade", // 机器人名称
+  "initial_state": "running", // 初始状态
+  "forcebuy_enable": false, // 是否启用强制买入
   "internals": {
-    "process_throttle_secs": 5
+    "process_throttle_secs": 5 // 内部处理节流时间（秒）
   }
 }
