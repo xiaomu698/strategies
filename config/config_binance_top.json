@@ -1,58 +1,57 @@
 {
-  "max_open_trades": 10,
-  "stake_currency": "USD",
-  "dry_run_wallet": 1000,
-  "stake_amount": 200,
-  "tradable_balance_ratio": 0.99,
-  "fiat_display_currency": "USD",
-  "timeframe": "5m",
-  "dry_run": true,
-  "cancel_open_orders_on_exit": false,
+  "max_open_trades": 10, // 最大同时打开的交易数
+  "stake_currency": "USD", // 下注货币
+  "dry_run_wallet": 1000, // 模拟运行的钱包余额
+  "stake_amount": 200, // 每次下注金额
+  "tradable_balance_ratio": 0.99, // 可交易余额比例
+  "fiat_display_currency": "USD", // 法币显示货币
+  "timeframe": "5m", // 时间框架（每根K线的时间）
+  "dry_run": true, // 是否模拟运行
+  "cancel_open_orders_on_exit": false, // 退出时是否取消未完成订单
   "unfilledtimeout": {
-    "entry": 10,
-    "exit": 10,
-    "exit_timeout_count": 0,
-    "unit": "minutes"
+    "entry": 10, // 进场订单未完成的超时时间（分钟）
+    "exit": 10, // 退场订单未完成的超时时间（分钟）
+    "exit_timeout_count": 0, // 退场超时计数
+    "unit": "minutes" // 超时时间单位
   },
   "entry_pricing": {
-    "price_side": "same",
-    "use_order_book": true,
-    "order_book_top": 1,
-    "price_last_balance": 0.0,
+    "price_side": "same", // 进场定价方向
+    "use_order_book": true, // 是否使用订单簿
+    "order_book_top": 1, // 使用订单簿顶部几档
+    "price_last_balance": 0.0, // 最后平衡价格
     "check_depth_of_market": {
-      "enabled": false,
-      "bids_to_ask_delta": 1
+      "enabled": false, // 是否检查市场深度
+      "bids_to_ask_delta": 1 // 买卖价差
     }
   },
   "exit_pricing": {
-    "price_side": "same",
-    "use_order_book": true,
-    "order_book_top": 1
+    "price_side": "same", // 退场定价方向
+    "use_order_book": true, // 是否使用订单簿
+    "order_book_top": 1 // 使用订单簿顶部几档
   },
   "order_types": {
-    "entry": "limit",
-    "exit": "limit",
-    "emergency_exit": "market",
-    "force_exit": "market",
-    "force_entry": "market",
-    "stoploss": "market",
-    "stoploss_on_exchange": false,
-    "stoploss_on_exchange_interval": 60,
-    "stoploss_on_exchange_limit_ratio": 0.99
+    "entry": "limit", // 进场订单类型
+    "exit": "limit", // 退场订单类型
+    "emergency_exit": "market", // 紧急退场订单类型
+    "force_exit": "market", // 强制退场订单类型
+    "force_entry": "market", // 强制进场订单类型
+    "stoploss": "market", // 止损订单类型
+    "stoploss_on_exchange": false, // 是否在交易所上执行止损
+    "stoploss_on_exchange_interval": 60, // 在交易所上执行止损的间隔时间（秒）
+    "stoploss_on_exchange_limit_ratio": 0.99 // 止损限价比例
   },
   "exchange": {
-    "name": "binance",
-    "key": "",
-    "secret": "",
+    "name": "binance", // 交易所名称
+    "key": "", // API密钥
+    "secret": "", // API密钥
     "ccxt_config": {
-      "enableRateLimit": true
+      "enableRateLimit": true // 是否启用速率限制
     },
     "ccxt_async_config": {
-      "enableRateLimit": true,
-      "rateLimit": 200
+      "enableRateLimit": true, // 是否启用异步速率限制
+      "rateLimit": 200 // 速率限制
     },
-    "pair_whitelist": [
-    ],
+    "pair_whitelist": [], // 交易对白名单
     "pair_blacklist": [
       ".*(BNB)/.*",
       ".*(_PREMIUM|BEAR|BULL|DOWN|HALF|HEDGE|UP|[1235][SL])/.*",
@@ -60,88 +59,50 @@
       ".*(BUSD|CUSDT|DAI|PAX|PAXG|SUSD|TUSD|USDC|USDT|UST|VAI)/.*",
       ".*(ACM|AFA|ALA|ALL|APL|ASR|ATM|BAR|CAI|CITY|FOR|GAL|GOZ|IBFK|JUV|LEG|LOCK-1|NAVI|NMR|NOV|OG|PFL|PSG|ROUSH|STV|TH|TRA|UCH|UFC|YBO)/.*",
       ".*(CHZ|CTXC|HBAR|NMR|SHIB|SLP|XVS|ONG|ARDR)/.*"
-    ]
+    ] // 交易对黑名单
   },
   "pairlists": [
     {
-//      "method": "StaticPairList"
-//          },
-//              {
-                "method": "VolumePairList",
-                "number_assets": 20,
-                "sort_key": "quoteVolume",
-                "refresh_period": 1800
-      //    //    },
-      //    {
-      //      "method": "AgeFilter",
-      //      "min_days_listed": 14
-      //    },
-      //    {
-      //      "method": "SpreadFilter",
-      //      "max_spread_ratio": 0.005
-      //    },
-      //    {
-      //      "method": "PriceFilter",
-      //      "min_price": 0.0001,
-      //      "low_price_ratio": 0.002
-      //    },
-      //    {
-      //      "method": "RangeStabilityFilter",
-      //      "lookback_days": 3,
-      //      "min_rate_of_change": 0.05,
-      //      "refresh_period": 1800
-      //    },
-      //    {
-      //      "method": "VolatilityFilter",
-      //      "lookback_days": 3,
-      //      "min_volatility": 0.02,
-      //      "max_volatility": 0.75,
-      //      "refresh_period": 43200
-      //    },
-      //    {
-      //        "method": "VolumePairList",
-      //        "number_assets": 80,
-      //        "sort_key": "quoteVolume",
-      //        "refresh_period": 1800
-      //    },
-      //    {
-      //      "method": "ShuffleFilter"
+      "method": "VolumePairList", // 成交量配对列表方法
+      "number_assets": 20, // 资产数量
+      "sort_key": "quoteVolume", // 排序关键字
+      "refresh_period": 1800 // 刷新周期（秒）
     }
   ],
   "edge": {
-    "enabled": false,
-    "process_throttle_secs": 3600,
-    "calculate_since_number_of_days": 7,
-    "allowed_risk": 0.01,
-    "stoploss_range_min": -0.01,
-    "stoploss_range_max": -0.3,
-    "stoploss_range_step": -0.01,
-    "minimum_winrate": 0.60,
-    "minimum_expectancy": 0.20,
-    "min_trade_number": 10,
-    "max_trade_duration_minute": 1440,
-    "remove_pumps": false
+    "enabled": false, // 是否启用edge
+    "process_throttle_secs": 3600, // 处理节流时间（秒）
+    "calculate_since_number_of_days": 7, // 计算天数
+    "allowed_risk": 0.01, // 允许风险
+    "stoploss_range_min": -0.01, // 最小止损范围
+    "stoploss_range_max": -0.3, // 最大止损范围
+    "stoploss_range_step": -0.01, // 止损范围步长
+    "minimum_winrate": 0.60, // 最小胜率
+    "minimum_expectancy": 0.20, // 最小期望值
+    "min_trade_number": 10, // 最小交易数量
+    "max_trade_duration_minute": 1440, // 最大交易持续时间（分钟）
+    "remove_pumps": false // 是否移除拉升行情
   },
   "telegram": {
-    "enabled": false,
-    "token": "",
-    "chat_id": ""
+    "enabled": false, // 是否启用Telegram通知
+    "token": "", // Telegram token
+    "chat_id": "" // Telegram chat ID
   },
   "api_server": {
-    "enabled": true,
-    "listen_ip_address": "127.0.0.1",
-    "listen_port": 8080,
-    "verbosity": "error",
-    "enable_openapi": false,
-    "jwt_secret_key": "",
-    "CORS_origins": [],
-    "username": "",
-    "password": ""
+    "enabled": true, // 是否启用API服务器
+    "listen_ip_address": "127.0.0.1", // 监听IP地址
+    "listen_port": 8080, // 监听端口
+    "verbosity": "error", // 日志详细级别
+    "enable_openapi": false, // 是否启用OpenAPI
+    "jwt_secret_key": "", // JWT密钥
+    "CORS_origins": [], // 允许的CORS来源
+    "username": "", // API用户名
+    "password": "" // API密码
   },
-  "bot_name": "freqtrade",
-  "initial_state": "running",
-  "force_enter_enable": false,
+  "bot_name": "freqtrade", // 机器人名称
+  "initial_state": "running", // 初始状态
+  "force_enter_enable": false, // 是否启用强制进场
   "internals": {
-    "process_throttle_secs": 5
+    "process_throttle_secs": 5 // 内部处理节流时间（秒）
   }
 }
