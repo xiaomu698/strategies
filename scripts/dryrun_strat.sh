@@ -1,69 +1,71 @@
 #!/bin/bash
 
-# dry run a  strategy. Takes care of python path, database spec, config file etc.
+# 运行策略的 dry run。处理 Python 路径、数据库规格、配置文件等。
 
 script=$0
 
+# 函数：显示使用说明
 show_usage () {
     cat << END
 
-Usage: zsh $script [options] <group> <strategy>
+用法: zsh $script [options] <group> <strategy>
 
-[options]:  -k | --keep-db    saves the existing database. Removed by default
-            -l | --leveraged  Use 'leveraged' config file
-            -p | --port       port number (used for naming). Optional
-            -s | --short      Use 'short' config file. Optional
+[options]:  -k | --keep-db    保存现有数据库。默认会删除
+            -l | --leveraged  使用 'leveraged' 配置文件
+            -p | --port       端口号（用于命名）。可选
+            -s | --short      使用 'short' 配置文件。可选
 
-<group>  Either subgroup (e.g. NNTC) or name of exchange (binanceus, coinbasepro, kucoin, etc)
+<group>  子组（例如 NNTC）或交易所名称（binanceus，coinbasepro，kucoin 等）
 
-<strategy>  Name of Strategy
+<strategy>  策略名称
 
-If port is specified, then the script will look for both config.json and config_<port>.json
+如果指定了端口，则脚本将查找 config.json 和 config_<port>.json
 
-If short is specified, then the script will look for config_short.json
+如果指定了 short，则脚本将查找 config_short.json
 
-If leveraged is specified, then the script will look for config_leveraged.json
+如果指定了 leveraged，则脚本将查找 config_leveraged.json
 
 END
 }
 
+# 函数：运行命令并输出结果
 run_cmd() {
   cmd="${1}"
   echo "${cmd}"
   eval ${cmd}
 }
 
-# Defaults
+# 默认值
 keep_db=0
 port=""
 short=0
 leveraged=0
 
-# process options
-die() { echo "$*" >&2; exit 2; }  # complain to STDERR and exit with error
+# 错误处理函数
+die() { echo "$*" >&2; exit 2; }  # 打印错误信息并退出
 needs_arg() { if [ -z "$OPTARG" ]; then die "No arg for --$OPT option"; fi; }
 
+# 解析命令行参数
 while getopts klp:s-: OPT; do
-  # support long options: https://stackoverflow.com/a/28466267/519360
-  if [ "$OPT" = "-" ]; then   # long option: reformulate OPT and OPTARG
-    OPT="${OPTARG%%=*}"       # extract long option name
-    OPTARG="${OPTARG#$OPT}"   # extract long option argument (may be empty)
-    OPTARG="${OPTARG#=}"      # if long option argument, remove assigning `=`
+  if [ "$OPT" = "-" ]; then
+    OPT="${OPTARG%%=*}"
+    OPTARG="${OPTARG#$OPT}"
+    OPTARG="${OPTARG#=}"
   fi
   case "$OPT" in
     k | keep-db )    keep_db=1 ;;
     l | leveraged )  leveraged=1 ;;
     p | port )       needs_arg; port="_$OPTARG" ;;
     s | short )      short=1 ;;
-    ??* )            show_usage; die "Illegal option --$OPT" ;;  # bad long option
-    ? )              show_usage; die "Illegal option --$OPT" ;;  # bad short option (error reported via getopts)
+    ??* )            show_usage; die "Illegal option --$OPT" ;;  # 非法长选项
+    ? )              show_usage; die "Illegal option --$OPT" ;;  # 非法短选项
   esac
 done
-shift $((OPTIND-1)) # remove parsed options and args from $@ list
+shift $((OPTIND-1)) # 移除已解析的选项和参数
 
-
+# 检查是否提供了必要的参数
 if [[ $# -ne 2 ]] ; then
-  echo "ERR: Missing arguments"
+  echo "错误：缺少参数"
   show_usage
   exit 0
 fi
@@ -77,59 +79,58 @@ base_config="config.json"
 port_config="config${port}.json"
 db_url="tradesv3${port}.dryrun.sqlite"
 
-
+# 检查是否为交易所
 exchange_list=$(freqtrade list-exchanges -1)
 if [[ "${exchange_list[@]}" =~ $group ]]; then
-  echo "Exchange (${group}) detected - using legacy mode"
+  echo "检测到交易所 (${group}) - 使用传统模式"
   base_config="config_${group}.json"
   port_config="config_${group}${port}.json"
   db_url="tradesv3_${group}${port}.dryrun.sqlite"
 fi
 
-
+# 设置配置文件路径
 if [ ${short} -eq 1 ]; then
-  # base_config="config_${group}_short.json"
   base_config=$(echo "${base_config}" | sed "s/.json/_short.json/g")
 fi
 
 if [[ leveraged -ne 0 ]] ; then
-    # base_config="config_${group}_leveraged.json"
-    base_config=$(echo "${base_config}" | sed "s/.json/_leveraged.json/g")
+  base_config=$(echo "${base_config}" | sed "s/.json/_leveraged.json/g")
 fi
 
+# 检查配置文件是否存在
 if [ ! -f ${base_config} ]; then
-    echo "Base config file not found: ${base_config}"
+    echo "未找到基本配置文件：${base_config}"
     exit 0
 fi
 
 if [ ! -f ${port_config} ]; then
-    echo "Port config file not found: ${port_config}"
+    echo "未找到端口配置文件：${port_config}"
     exit 0
 fi
 
+# 检查策略目录是否存在
 if [ ! -d ${group_dir} ]; then
-    echo "Strategy dir not found: ${group_dir}"
+    echo "未找到策略目录：${group_dir}"
     exit 0
 fi
 
 echo ""
-echo "Using config file: ${base_config} and Strategy dir: ${group_dir}"
+echo "使用配置文件：${base_config} 和策略目录：${group_dir}"
 echo ""
 
-# set up path
+# 设置 PYTHONPATH
 oldpath=${PYTHONPATH}
 export PYTHONPATH="./${group_dir}:./${strat_dir}:${PYTHONPATH}"
 
-# Remove previous dryrun database, unless option specified to keep
+# 删除之前的 dry run 数据库，除非指定保留
 if [ ${keep_db} -ne 1 ]; then
-  # remove existing database
   if [ -f ${db_url} ]; then
-    echo "removing ${db_url}"
+    echo "删除 ${db_url}"
     rm ${db_url}
   fi
 fi
 
-# set up config file chain (if port specified)
+# 设置配置文件链（如果指定了端口）
 if [[ ${port} == "" ]]; then
   config="${base_config}"
 else
@@ -150,9 +151,8 @@ END
 
 run_cmd "${cmd}"
 
-
 echo -en "\007" # beep
 echo ""
 
-# restore PYTHONPATH
+# 恢复 PYTHONPATH
 export PYTHONPATH="${oldpath}"
