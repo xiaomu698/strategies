@@ -5,4 +5,6 @@
 zsh user_data/strategies/scripts/download.sh binanceus
 zsh user_data/strategies/scripts/download.sh binance
 zsh user_data/strategies/scripts/test_strat.sh -n 30 NNPredict NNPredict_Transformer
+zsh user_data/strategies/scripts/test_strat.sh -n 30 NNPredict NNPredict_LSTM
+
 
