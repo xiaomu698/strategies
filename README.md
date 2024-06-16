@@ -8,6 +8,22 @@
 |NNTC_*	|神经网络三位一体分类器 - 预测持有/买入/卖出事件的方法|无|
 |TSPredict|时间序列预测 |无
 
+**NNPredict
+|策略|描述|
+| Attention         | self-Attention (Transformer Attention) |
+| AdditiveAttention | Additive-Attention                     |
+| CNN               | Convolutional Neural Network           |
+| Ensemble          | Ensemble/Stack of several Classifiers  |
+| GRU               | Gated Recurrent Unit                   |
+| LSTM              | Long-Short Term Memory (basic)         |
+| LSTM2             | Two-tier LSTM                          |
+| LSTM3             | Convolutional/LSTM Combo               |
+| MLP               | Multi-Layer Perceptron                 |
+| Multihead         | Multihead Self-Attention               |
+| TCN               | Temporal Convolutional Network         |
+| Transformer       | Transformer                            |
+| Wavenet           | Simplified Wavenet                     |
+| Wavenet2          | Full Wavenet                           |
 
 
 回测命令
