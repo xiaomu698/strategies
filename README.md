@@ -27,6 +27,31 @@
 | Wavenet        | Simplified Wavenet               | 简化版Wavenet                              | 用于生成音频信号的卷积神经网络，具有因果卷积结构。         |
 | Wavenet2       | Full Wavenet                     | 完整版Wavenet 
 
+# NNTC信号类型对照表
+
+以下是本项目中使用的各种信号类型及其描述：
+
+| SignalType          | 描述                                                                                            |
+|---------------------|-------------------------------------------------------------------------------------------------|
+| Bollinger_Width     | 基于布林带宽度                                                                                  |
+| DWT                 | 基于收盘价的离散小波变换（DWT）。比较滚动版本和前瞻版本的DWT差异                                |
+| DWT2                | 检测前瞻DWT中的局部最小值和最大值                                                               |
+| Fisher_Bollinger    | 费舍尔/威廉姆斯比率和布林带距离                                                                  |
+| Fisher_Williams     | 费舍尔/威廉姆斯比率                                                                             |
+| High_Low            | 检测最近窗口的高点/低点                                                                         |
+| Jump                | 检测大幅跳水或跳涨                                                                              |
+| MACD                | 经典的MACD交叉                                                                                   |
+| MACD2               | 检测MACD直方图的低点和高点                                                                      |
+| MACD3               | 检测MACD直方图的统计高/低区域                                                                   |
+| Money_Flow          | 查金资金流量指标（MFI）                                                                         |
+| Min_Max             | 检测过去和未来窗口的最小值和最大值                                                              |
+| N_Sequence          | 检测长时间的连续上涨/下跌                                                                       |
+| Oversold            | 使用多种超卖/超买指标                                                                           |
+| Profit              | 检测利润/亏损的跳跃                                                                             |
+| Peaks_Valleys       | 检测价格的峰值和谷值                                                                            |
+| Stochastic          | 使用快速D/快速K随机指标                                                                         |
+| Swing               | 检测价格的统计大波动                                                                            |
+
 
 回测命令
 zsh user_data/strategies/scripts/download.sh binanceus
