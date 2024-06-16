@@ -9,7 +9,8 @@
 |TSPredict|时间序列预测 |无
 
 **NNPredict
-|策略|描述|
+|策略|描述|备注|
+|-------|-------|-------|
 | Attention         | self-Attention (Transformer Attention) |
 | AdditiveAttention | Additive-Attention                     |
 | CNN               | Convolutional Neural Network           |
