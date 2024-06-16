@@ -3,7 +3,8 @@
 
 |策略|描述|备注|
 |-------|-------|-------|
-NNPredict_*	|Uses neural network approaches to predict price changes|无|
+|NNPredict_*	|使用神经网络方法预测价格变化|无|
+|Anomaly*|用于识别买入/卖出的异常检测算法。|Anomaly.py 是主要逻辑，Anomaly_*.py包含算法|
 
 
 
